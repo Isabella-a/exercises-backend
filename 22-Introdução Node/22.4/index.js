@@ -4,6 +4,7 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const fs = require('fs/promises');
 
 const app = express();
 
@@ -38,7 +39,7 @@ app.post('/greetings', (req, res) => {
 // * Sua rota deve retornar o seguinte JSON: { "message": "Seu nome é <name> e você tem <age> anos de idade" }
 app.put('/users/:name/:age', (req, res) => {
   const { name, age } = req.params;
-  res.json({ "message": `Seu nome é ${name} e você tem ${age} anos de idade` });
+  res.status(200).json({ "message": `Seu nome é ${name} e você tem ${age} anos de idade` });
 });
 
 // 5 - Crie uma API de dados das personagens de Simpsons
@@ -46,6 +47,12 @@ app.put('/users/:name/:age', (req, res) => {
 // * Caso algum erro ocorra, deve ser retornado um código 500 (Internal Server Error).
 // * Caso dê tudo certo, a resposta deve voltar com status 200 OK .
 // * Para testar sua API durante o desenvolvimento, utilize ferramentas que permitem fazer requisições HTTP, como Postman , Insomnia ou httpie .
+const getSimpsons = async () => {
+  const file = await fs.readFile('./simpsons.json', 'utf-8');
+  const simpsons = JSON.parse(file);
+  return simpsons;
+};
+
 
 
 // 6 - Crie um endpoint GET '/simpsons'
